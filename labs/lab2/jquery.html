@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <h1 id='fln'>JQUERY </h1>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script>
+  let element = $('#fln');
+	$.ajax({
+        method: 'GET',
+		url: '/api/name',
+		success: (data) => {
+			element.append(data);
+			element.append(textStatus);
+		}
+	});
+</script>
+</html>

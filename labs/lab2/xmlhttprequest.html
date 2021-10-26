@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>XMLHttpRequest</title>
+</head>
+<body>
+    <h1 id='fln'> First and Last Name: </h1>
+</body>
+<script>
+    let element = document.getElementById('fln');
+      let request = new XMLHttpRequest();
+      request.open('GET', 'http://localhost:5000/api/name', false); // configuration
+      request.send();
+      if(request.status == 200)
+      	element.append(request.responseText); 
+    
+</script>
+</html>
