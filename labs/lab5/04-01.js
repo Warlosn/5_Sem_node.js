@@ -1,7 +1,7 @@
 var http = require('http')
 var url = require('url')
 var fs = require('fs')
-var data = require('./index.js')
+var data = require('./DB.js')
 
 var db = new data.DB()
 let reqCount = 0;
@@ -57,7 +57,7 @@ db.on('COMMIT', () => {
 
 let server = http.createServer(function (req, resp) {
 	if(url.parse(req.url).pathname === '/api/db') {
-		db.emit(req.method, req, resp);
+		db.emit(req.method, req, resp);//генерация событиya
 	}
 	if(url.parse(req.url).pathname === '/') {
         let page = fs.readFileSync('./index.html');
@@ -69,6 +69,7 @@ let server = http.createServer(function (req, resp) {
         resp.end(JSON.stringify(printStatic()));
     }
 }).listen(5000);
+console.log('Server running at http://localhost:5000/');
 
 let buf = ""
 let timerSd = null;
@@ -76,6 +77,7 @@ let timerSc = null;
 let timerSs = null;
 process.stdin.setEncoding('utf-8');
 process.stdin.unref();
+server.on('connection', (socket) => socket.unref());
 process.stdin.on('readable', () => {
     let chunk = null;
     while ((chunk = process.stdin.read()) != null) {
@@ -139,3 +141,4 @@ function printStatic()
     let start =(new Date(Date.now())).toISOString().slice(0,10);
     return 'start: '+ start + ', finish: ' + (new Date(Date.now())).toISOString().slice(0,10) + ', request: ' + reqCount + ', commit: ' + comCount + '\n';
 }
+

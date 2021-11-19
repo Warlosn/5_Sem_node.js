@@ -1,0 +1,23 @@
+body {
+  background-color:lightsteelblue;
+}
+
+.container {
+  color:deeppink;
+}
+
+img {
+  width: 420px;
+  height: 555px;
+  float:right;
+}
+
+video {
+  width: 620px;
+  height: 340px;
+}
+.h1{
+    color:darkviolet;
+    text-align:center;
+    font-size: 40px;
+}

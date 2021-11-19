@@ -1,14 +1,13 @@
 var util = require('util')
 var ev = require('events');
-const { parse } = require('querystring');
+
 
 var db_data = [
-                {id: 1, name: 'Smith', bday:'2001-01-01'},
-                {id: 2, name: 'Adam', bday:'2002-02-02'},
-                {id: 3, name: 'Merhel', bday:'2003-03-03'},
-                {id: 4, name: 'Kovalenok', bday:'2004-04-04'},
-                {id: 5, name: 'Red', bday:'2005-05-05'},
-                {id: 6, name: 'Table', bday:'2006-06-06'},
+                {id: 1, name: 'Ivan', bday:'2001-09-27'},
+                {id: 2, name: 'Nikita', bday:'2002-08-22'},
+                {id: 3, name: 'Dima', bday:'2001-05-02'},
+                {id: 4, name: 'Kirill', bday:'2002-08-22'},
+                {id: 4, name: 'Karolina', bday:'2002-03-20'},
 ]
 
 function DB()
@@ -27,7 +26,7 @@ function DB()
 
     this.update = (row) => {
         let index = db_data.findIndex(i => i.id == row.id)
-        return db_data.splice(index, 1, row)
+        return db_data.splice(index, 1, row)//начало изменения, кол-во удаленных, добавленные
     }
 
     this.delete = (index) => {
@@ -41,10 +40,8 @@ function DB()
     }
 
     this.commit = () => {
-        console.log('lets pretend we can see commit')
+        console.log('this function is not useless')
     }
 }
-
-
-util.inherits(DB, ev.EventEmitter);
-exports.DB = DB
+util.inherits(DB, ev.EventEmitter);// DB наследует EventEmitter
+exports.DB = DB; //экспортируется объект DB
