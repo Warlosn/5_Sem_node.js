@@ -1,0 +1,19 @@
+{
+    "__comment": "request lab8",
+    "x":1,
+    "y":2,
+    "s":"Message",
+    "m":["a","b","c","d"],
+    "o":{"surname":"Ivanov", "name":"Ivan"}
+}
+
+<request id ="28">
+    <x value = "1"/>
+    <x value = "2"/>
+    <m value = "a"/>
+    <m value = "b"/>
+    <m value = "c"/>
+</request>
+
+field - когда событие
+$ 115
