@@ -1,30 +1,39 @@
-var http =require('http');
-var fs= require('fs');
-let bound='SHU-SHU'
-let body=`--${bound}\r\n`;
-body+='Content-Disposition:form-data; name="file"; Filename="MyFile.txt"\r\n';
-body+='Content-Type:text/plain\r\n\r\n';
-body+=fs.readFileSync('MyFile.txt');
-body+=`\r\n--${bound}--\r\n`;
-let path=`/UploadFile`;
-console.log(path);
-let options= {
-    host: 'localhost',
-    path: path,
-    port: 5000,
-    method:'POST',
-    headers:
-    {'Content-Type':'multipart/form-data; boundary='+bound}
-}
-const req = http.request(options,(res)=> {
-    let data = '';
-    res.on('data',(chunk) =>
-    {
-        console.log('http.request: data: body=', data+=chunk.toString('utf-8'));
-    });
-    res.on('end',()=>{ console.log('http.request: end: body=', data);
-    }); 
+const http = require('http');
+const fs = require('fs');
+
+http.createServer((request, response) => {
+  response.writeHead(200, {
+    'Content-Type': 'text/plain; charset=utf-8'
+  });
+  let txt = '';
+  request.on('data', (chunk) => {
+    txt += chunk.toString();
+    response.end(txt);
+  });
+}).listen(5000);
+
+let bound = '----------------------------------------------------------------------';
+let body = `${bound}\r\n\n`;
+body += 'Content-Disposition: form-data; name="file"; filename="MyFile.txt"\r\n';
+body += 'Content-Type: text/plain\r\n\r\n';
+body += fs.readFileSync('MyFile.txt');
+body += `\r\n${bound}\r\n`;
+
+let options = {
+  host: 'localhost',
+  path: '/',
+  port: 5000,
+  method: 'POST',
+  headers: {
+    'content-type': 'multipart/form-data; boundary=' + bound
+  }
+};
+
+let request = http.request(options, (responce) => {
+  let responseData = '';
+  responce.on('data', (chunk) => {
+    console.log(responseData += chunk.toString('utf-8'));
+  });
 });
-req.on('error', (e)=> {console.log('http.request: error:', e.message);
-});
-req.end(body);
+
+request.end(body);

@@ -1,23 +1,35 @@
-var http =require('http');
-let options= {
-    host: 'localhost',
-    path: '/Inform',
-    port: 5000,
-    method:'GET'
-}
-const req = http.request(options,(res)=> {
-    console.log('http.request: statusCode: ',res.statusCode);
-    console.log('http.request: statusMessage: ',res.statusMessage);
-    console.log('http.request: socket.remoteAddress: ',res.socket.remoteAddress);
-    console.log('http.request: socket.remotePort: ',res.socket.remotePort);
-    let data = '';
-    res.on('data',(chunk) =>
-    {
-        console.log('http.request: data: body=', data+=chunk.toString('utf-8'));
+const http = require('http');
+
+http.createServer((request, response) => {
+  if (request.method === 'GET') {
+    response.writeHead(200, {
+      'Content-Type': 'text/html; charset=utf-8'
     });
-    res.on('end',()=>{ console.log('http.request: end: body=', data);
-    }); 
+    response.end();
+  }
+}).listen(5000);
+
+let options = {
+  host: 'localhost',
+  path: '/',
+  port: 5000,
+  method: 'GET'
+};
+
+let request = http.request(options, (response) => {
+  console.log('Status:', response.statusCode);
+  console.log('Status message:', response.statusMessage);
+  console.log('IP address of remote server:', response.socket.remoteAddress);
+  console.log('Port of remote server:', response.socket.remotePort);
+
+  let responseData = '';
+  response.on('data', (chunk) => {
+    console.log(responseData += chunk.toString('utf-8'));
+  });
+
 });
-req.on('error', (e)=> {console.log('http.request: error:', e.message);
+
+request.on('error', (e) => {
+  console.log('Error: ', e.message);
 });
-req.end();
+request.end();

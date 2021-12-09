@@ -1,39 +1,63 @@
-var http =require('http');
-var query= require('querystring');
-let parms=JSON.stringify(
-    {
-        "__comment": "Запрос.Лабораторная работа 8/10",
-        "x": 1,
-        "y": 2,
-        "s": "Сообщение",
-        "m": ["a","b","c","d"],
-        "o": {"surname":"Шуст","name":"Юрий"}
-    }
-);
-let path=`/JSON`;
-console.log(path);
-let options= {
-    host: 'localhost',
-    path: path,
-    port: 5000,
-    method:'POST',
-    headers:
-    {
-        'content-type':'application/json', 'accept':'application/json'
-    }
-}
-const req = http.request(options,(res)=> {
-    console.log('http.request: statusCode: ',res.statusCode);
-    let data = '';
-    res.on('data',(chunk) =>
-    {
-        console.log('http.request: data: body=', data+=chunk.toString('utf-8'));
+const http = require('http');
+
+http.createServer((request, response) => {
+  let data = '';
+  request.on('data', (chunk) => {
+    data += chunk;
+  });
+  request.on('end', () => {
+    response.writeHead(200, {
+      'Content-type': 'application/json; charset=utf-8'
     });
-    res.on('end',()=>{ console.log('http.request: end: body=', data);
-    console.log('http.request: end: parse(body)=', JSON.parse(data));
-    }); 
+
+    data = JSON.parse(data);
+    let jsonResponse = {};
+    jsonResponse.__comment = 'Response: ' + data.__comment;
+    jsonResponse.x_plus_y = data.x + data.y;
+    jsonResponse.Concatenation_s_o = data.s + ' ' + data.o.surname + ' ' + data.o.name;
+    jsonResponse.Length_m = data.m.length;
+
+    response.end(JSON.stringify(jsonResponse));
+  });
+}).listen(5000);
+
+let parameters = JSON.stringify({
+  __comment: "Lab9",
+  x: 2,
+  y: 3,
+  s: "Student:",
+  m: [1, 2, 3],
+  o: {
+    surname: "Grishin",
+    name: "Ivan"
+  }
 });
-req.on('error', (e)=> {console.log('http.request: error:', e.message);
+
+let options = {
+  host: 'localhost',
+  path: '/',
+  port: 5000,
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+};
+
+let request = http.request(options, (response) => {
+  console.log('Status:', response.statusCode);
+
+  let responseData = '';
+  response.on('data', (chunk) => {
+    responseData += chunk.toString('utf-8');
+  });
+  response.on('end', () => {
+    console.log(responseData);
+    console.log(JSON.parse(responseData));
+  });
 });
-req.write(parms);
-req.end();
+
+request.on('error', (e) => {
+  console.log('Error: ', e.message);
+});
+request.end(parameters);
