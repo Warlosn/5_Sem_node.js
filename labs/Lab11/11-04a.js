@@ -2,7 +2,7 @@ const WebSocket = require("ws");
 const ws = new WebSocket("ws://localhost:4000");
 
 let parm = process.argv[2];
-let clientName = typeof parm == "undefined" ? "Kirill" : parm;
+let clientName = typeof parm == "undefined" ? "Ivan" : parm;
 
 ws.on("open", () => {
   ws.on("message", (data) => {
