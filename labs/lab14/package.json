@@ -1,0 +1,17 @@
+{
+  "name": "lab_14",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "mongodb": "^4.2.2",
+    "mssql": "^7.2.1",
+    "msnodesqlv8": "^2.4.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

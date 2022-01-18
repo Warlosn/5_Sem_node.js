@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Document</title>
+</head>
+
+<body>
+<div>
+    <di id="app_error"></div>
+    <button onclick="Get()">GET</button>
+    <div>
+        <label>SUBJECT: </label>
+        <input type="text" class="col-3" id="SUBJECT"/>
+    </div>
+    <div>
+        <label>SUBJECT_NAME: </label>
+        <input type="text" class="col-3" id="SUBJECT_NAME"/>
+    </div>
+    <div>
+        <label>PULPIT: </label>
+        <input type="text" class="col-3" id="PULPIT"/>
+    </div>
+    <div>
+        <script>
+            
+        </script>
+        <button onclick="Post()">Post</button>
+    </div>
+    <div>
+        <button onclick="Delete()">Delete</button>
+    </div>
+    <div>
+        <button onclick="Put()">Put</button>
+    </div>
+    <div id="result" content=""></div>
+<br/>
+</div>
+<script>
+    async function Get() {
+        let errElem = document.getElementById("app_error");
+        errElem.innerHTML = '';
+        fetch('http://localhost:5000/api/subjects', {
+            
+            method: 'GET',
+            headers: {'Accept': 'application/json'}
+        }).then(response => {
+                return response.json();
+            })
+            .then(pdata => {
+                
+                console.log('pdata', pdata);
+                let result = document.getElementById("result");
+                result.innerHTML = '';
+                result.innerHTML += '<table><tr><th> SUBJECT </th><th> SUBJECT NAME</th><th> PULPIT</th></tr>';
+                pdata.forEach(element => {
+                    result.innerHTML += '<tr><td>' + element.SUBJECT + ' </td><td> ' + element.SUBJECT_NAME + '</td><td>' + element.PULPIT + '</td></tr></br>';
+                });
+            }).catch((err) => {
+                document.getElementById("app_error").innerHTML = err;
+            });
+    }
+
+    function Post() {
+        let SUBJECT = document.getElementById("SUBJECT");
+        let SUBJECT_NAME = document.getElementById("SUBJECT_NAME");
+        let PULPIT = document.getElementById("PULPIT");
+        console.log(JSON.stringify(
+            {
+                subject: SUBJECT.value,
+                subject_name: SUBJECT_NAME.value,
+                pulpit: PULPIT.value
+            }));
+        let errElem = document.getElementById("app_error")
+        fetch('http://localhost:5000/api/subjects', {
+            method: 'POST',
+            mode: "no-cors",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(
+                {
+                    subject: SUBJECT.value,
+                    subject_name: SUBJECT_NAME.value,
+                    pulpit: PULPIT.value
+                }
+            )
+        }).then(response => {
+                return response.json();
+            })
+            .then(pdate => {
+                console.log('POST.pdate', pdate);
+                if (typeof(pdate.error) != 'undefined' && pdate.error != null) {
+                    errElem.innerHTML = pdate.error;
+                }
+            }).catch((err) => {
+                console.log(err);
+                document.getElementById("app_error").innerHTML = err;
+            });
+
+    }
+
+    function Delete() {
+        let SUBJECT = document.getElementById("SUBJECT");
+        fetch(`http://localhost:5000/api/subjects/${SUBJECT.value}`, {
+            method: 'DELETE',
+            headers: {
+                'Access-Control-Request-Method': 'DELETE'
+            }
+        }).then(Get()).catch((err) => {document.getElementById("app_error").innerHTML = err;})
+    }
+
+    function Put() {
+        let SUBJECT = document.getElementById("SUBJECT");
+        let SUBJECT_NAME = document.getElementById("SUBJECT_NAME");
+        let PULPIT = document.getElementById("PULPIT");
+        fetch('http://localhost:5000/api/subjects', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(
+                {
+                    subject: SUBJECT.value,
+                    subject_name: SUBJECT_NAME.value,
+                    pulpit: PULPIT.value
+                }
+            )
+        })
+            .then(response => {
+                return response.json();
+            })
+            .then(pdate => {
+                console.log('POST.pdata', pdata);
+            }).then(Get()).catch((err)=>{document.getElementById("app_error").innerHTML = err;});
+
+    }
+</script>
+</body>
+</html>
