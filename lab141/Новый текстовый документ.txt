@@ -1,0 +1,34 @@
+{
+        "faculty": "QQQ",
+        "faculty_name": "testqqq"
+    }
+
+{
+        "subject": "test1",
+        "subject_name": "Базы данных12",
+        "pulpit": "ИСиТ"
+    }
+
+{
+        "auditorium_type": "test1",
+        "auditorium_typename": "test2"
+    }
+
+{
+        "auditorium": "test55",
+        "auditorium_name": "test55",
+        "auditorium_capacity": 90,
+        "auditorium_type": "test6"
+    }
+
+{
+        "pulpit": "test22",
+        "pulpit_name": "test2",
+        "faculty": "ХТиТ"
+
+    }
+
+{
+        "faculty": "ИЭФ34",
+        "facultyName": "1test50"
+    }

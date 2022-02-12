@@ -44,7 +44,7 @@ class DB {
     {
         return this.connectionPool.then(pool => {
             return pool.request().input('faculty', sql.NVarChar, faculty)
-            .input('faculty_name', sql.NVarChar, facultyName)
+            .input('faculty_name', sql.NVarChar, facultyName)//имя, тип, значение
             .query('INSERT FACULTY(FACULTY, FACULTY_NAME) values(@faculty , @faculty_name)');
         })
     }

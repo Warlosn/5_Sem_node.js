@@ -1,0 +1,114 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 14</title>
+    <style>
+        .segm {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        function get_req() {
+            var printData = document.getElementById('infoGet');
+
+            fetch('/api/pulpits', {
+                method: 'GET'
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                console.log(data)
+                printData.innerHTML +="Total pulpits: "+data.length+"<br>";
+                for (let i in data) {
+                    printData.innerHTML += JSON.stringify(data[i], null, 2) + '<br><br>';
+                }
+            });
+        }
+
+        function post_req() {
+            var printData = document.getElementById('infoPost');
+            fetch('/api/pulpits', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "pulpit":"ПОИТ",
+                    "pulpit_name":"Программаное обеспечение информационных технологий",
+                    "faculty":"ИДиП"
+                })
+            })
+            .then(response => {
+                if(response.ok){
+                    return response.json()
+                } else {
+                    return response.text();
+                }
+            })
+            .then(data => {
+                console.log(typeof data);
+                printData.innerHTML += JSON.stringify(data, null, 2) + '<br>';
+            });
+        }
+
+        function put_req() {
+            var printData = document.getElementById('infoPut');
+            fetch('/api/pulpits', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "pulpit": "ПОИТ",
+                    "pulpit_name": "Запись изменена",
+                    "faculty": "ИЭФ"
+                })
+            })
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                printData.innerHTML += JSON.stringify(data, null, 2) + '<br>';
+            })
+            .catch(err => {
+                printData.innerHTML += err.message;
+            });
+        }
+
+        function delete_req() {
+            var printData = document.getElementById('infoDelete');
+            fetch('/api/pulpits/ПОИТ', {
+                method: 'DELETE'
+            })
+            .then(response => {
+                return response.text();
+            })
+            .then(data => {
+                printData.innerHTML += data + '<br>';
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="segm">
+        <input type="button" onclick="get_req()" value="GET api/pulpits">
+        <div id="infoGet"></div>
+    </div>
+    <div class="segm">
+        <input type="button" onclick="post_req()" value="POST api/pulpits">
+        <div id="infoPost"></div>
+    </div>
+    <div class="segm">
+        <input type="button" onclick="put_req()" value="PUT api/pulpits">
+        <div id="infoPut"></div>
+    </div>
+    <div class="segm">
+        <input type="button" onclick="delete_req()" value="DELETE api/pulpits/xyz">
+        <div id="infoDelete"></div>
+    </div>
+</body>
+</html>
